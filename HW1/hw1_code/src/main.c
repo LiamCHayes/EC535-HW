@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <string.h>
 #include "bits.h"
+#include "mylist.h"
 
 int main(int argc, char *argv[]) {
     /* Parse arguments */
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]) {
 
     /* Compute binary mirror and 010 sequences for each line in the file */
     char line[32];
+    Node* first_node = NULL;
     while (fgets(line, sizeof(line), input_file)) {
         /* Process line to convert to unsigned int */
         line[strcspn(line, "\n")] = '\0';
@@ -60,9 +62,18 @@ int main(int argc, char *argv[]) {
         /* Count 010 sequences */
         unsigned int num_sequences = CountSequence(decimal);
 
-        /* Write to file */
-        fprintf(output_file, "%-10u %u\n", decimal_mirror, num_sequences);
+        /* Add to linked list */
+        Node* new_node = CreateNode(decimal, decimal_mirror, num_sequences);
+        if (first_node == NULL) {
+            first_node = new_node;
+        }
+        first_node = InsertNode(first_node, new_node);
     }
+
+    /* Write to file from linked list */
+    do {
+        first_node = PopToFile(first_node, output_file);
+    } while (first_node->next != NULL);
 
     fclose(input_file);
     fclose(output_file);

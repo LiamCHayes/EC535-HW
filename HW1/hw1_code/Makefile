@@ -6,7 +6,7 @@ CFLAGS = -Wall -Wextra -Iinclude -g
 TARGET = MyBitApp
 
 # Source and object files
-SRCS = src/main.c src/bits.c
+SRCS = src/main.c src/bits.c src/mylist.c
 OBJS = $(SRCS:.c=.o)
 
 # Build the executable
