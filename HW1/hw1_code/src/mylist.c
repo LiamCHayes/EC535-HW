@@ -32,8 +32,8 @@ static int* get_ascii(unsigned int data) {
 
 /* Returns true if the first node is greater based on ascii representation */
 static bool greater_than_ascii(Node* node1, Node* node2) {
-    int* ascii1 = get_ascii(node1->data);
-    int* ascii2 = get_ascii(node2->data);
+    int* ascii1 = get_ascii(node1->decimal_mirror);
+    int* ascii2 = get_ascii(node2->decimal_mirror);
 
     for (int i=0; ascii1!=0 && ascii2!=0; i++) {
         if (ascii1[i] > ascii2[i]) return true;
