@@ -1,3 +1,5 @@
+/* Liam Hayes - liamh */
+
 #include "mylist.h"
 #include <stdlib.h>
 #include <stdbool.h>

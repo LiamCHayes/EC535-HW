@@ -1,3 +1,5 @@
+# Liam Hayes - liamh
+
 # Compiler
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude -g

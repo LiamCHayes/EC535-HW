@@ -1,3 +1,5 @@
+/* Liam Hayes - liamh */
+
 #ifndef BITS_H
 #define BITS_H
 
