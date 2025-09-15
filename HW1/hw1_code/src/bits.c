@@ -47,7 +47,7 @@ unsigned int CountSequence(unsigned int dec) {
 
     /* Count the number of 010 sequences */
     unsigned int counter = 0;
-    for (int i=0; i<29; i++) {
+    for (int i=0; i<30; i++) {
         if (binary[i] == '0' && binary[i+1] == '1' && binary[i+2] == '0') {
             counter++;
         }
