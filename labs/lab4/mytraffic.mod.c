@@ -26,6 +26,7 @@ static const struct modversion_info ____versions[]
 __used
 __attribute__((section("__versions"))) = {
 	{ 0xa16cf51b, "module_layout" },
+	{ 0xc6f46339, "init_timer_key" },
 	{ 0xcf8d2e6f, "kmem_cache_alloc_trace" },
 	{ 0xb44e414c, "kmalloc_caches" },
 	{ 0x1f6e82a4, "__register_chrdev" },
@@ -34,7 +35,6 @@ __attribute__((section("__versions"))) = {
 	{ 0xc38c83b8, "mod_timer" },
 	{ 0x526c3a6c, "jiffies" },
 	{ 0x7f02188f, "__msecs_to_jiffies" },
-	{ 0xc6f46339, "init_timer_key" },
 	{ 0xdb7305a1, "__stack_chk_fail" },
 	{ 0xfe990052, "gpio_free" },
 	{ 0x7c32d0f0, "printk" },
