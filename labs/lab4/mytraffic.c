@@ -3,6 +3,8 @@
 #include <linux/jiffies.h> 
 #include <linux/timer.h>
 #include <linux/gpio.h>
+#include <linux/interrupt.h>
+#include <linux/irq.h>
 
 MODULE_LICENSE("Dual BSD/GPL");
 
@@ -42,13 +44,36 @@ int pedestrian = 0;
 static enum Mode mode = NORMAL;
 static enum LightColor light_color = GREEN;
 
+static int btn0_gpio = 26;
+static int btn1_gpio = 46;
+static int btn0_irq;
+static int btn1_irq;
+static irqreturn_t button_isr(int irq, void *data) {
+    if (irq == btn0_irq) {
+        switch (mode) {
+            case NORMAL:
+                mode = FLASHING_RED;
+                break;
+            case FLASHING_RED:
+                mode = FLASHING_YELLOW;
+                break;
+            case FLASHING_YELLOW:
+                mode = NORMAL;
+                break;
+        }
+    } else if (irq == btn1_irq) {
+        if (mode == NORMAL) {
+            pedestrian = 1;
+        }
+    }
+
+    return IRQ_HANDLED;
+}
+
 static int red_gpio = 67;
 static int yellow_gpio = 68;
 static int green_gpio = 44;
-static int btn0_gpio = 26;
-static int btn1_gpio = 46;
 static void set_light(enum LightColor color) {
-    // TODO set light color with gpio pins
     int ret;
     int gpios[] = {red_gpio, yellow_gpio, green_gpio};
     int i;
@@ -100,7 +125,6 @@ free_gpios:
 static struct timer_list * timer; 
 
 static void timer_handler(struct timer_list *data) {
-    printk("entered timer callback");
     // timer logic
     if (mode == NORMAL) {
         switch (light_color) {
@@ -200,11 +224,32 @@ static int mytraffic_init(void) {
     timer_setup(timer, timer_handler, 0);
     mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 3));
 
-    printk("mytraffic loaded.\n");
+    // Set up button interrupts
+    int ret;
+    ret = gpio_request(btn0_gpio, "BTN0");
+    if (ret) return ret;
+    gpio_direction_input(btn0_gpio);
+
+    ret = gpio_request(btn1_gpio, "BTN1");
+    if (ret) return ret;
+    gpio_direction_input(btn1_gpio);
+
+    // Map GPIOs to IRQ numbers
+    btn0_irq = gpio_to_irq(btn0_gpio);
+    btn1_irq = gpio_to_irq(btn1_gpio);
+
+    // Request IRQs on rising or falling edges
+    ret = request_irq(btn0_irq, button_isr, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, "btn0_irq", NULL);
+    if (ret) pr_err("Failed to request IRQ for BTN0\n");
+
+    ret = request_irq(btn1_irq, button_isr, IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING, "btn1_irq", NULL);
+    if (ret) pr_err("Failed to request IRQ for BTN1\n");
+
+    printk(KERN_ALERT "mytraffic loaded.\n");
     return 0;
 
 fail:
-    printk("failed to load mytraffic.\n");
+    printk(KERN_ALERT "failed to load mytraffic.\n");
     mytraffic_exit();
     return result;
 }
@@ -213,6 +258,32 @@ static void mytraffic_exit(void) {
     unregister_chrdev(mytraffic_major, "mytraffic");
     if (timer)
         kfree(timer);
+
+    // set gpio to 0 and release
+    int ret;
+    int gpios[] = {red_gpio, yellow_gpio, green_gpio};
+    int i;
+
+    for (i=0; i<3; i++) {
+        ret = gpio_request(gpios[i], "my_gpio");
+        if (ret) {
+            pr_err("Failed to request GPIO %d\n", gpios[i]);
+            goto free_gpios;
+        }
+        ret = gpio_direction_output(gpios[i], 0);
+        if (ret) {
+            pr_err("Failed to set GPIO direction %d\n", gpios[i]);
+            goto free_gpios;
+        }
+        gpio_set_value(gpios[i], 0);
+        gpio_free(gpio[i]);
+    }
+
+    // free irqs and button gpio
+    free_irq(btn0_irq, NULL);
+    free_irq(btn1_irq, NULL);
+    gpio_free(btn0_gpio);
+    gpio_free(btn1_gpio);
 
     printk(KERN_ALERT "Removing mytraffic module\n");
 }
