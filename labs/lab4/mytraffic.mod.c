@@ -26,10 +26,14 @@ static const struct modversion_info ____versions[]
 __used
 __attribute__((section("__versions"))) = {
 	{ 0xa16cf51b, "module_layout" },
+	{ 0xd6b8e852, "request_threaded_irq" },
+	{ 0x5871f40, "gpiod_to_irq" },
+	{ 0xa89bfca5, "gpiod_direction_input" },
 	{ 0xc6f46339, "init_timer_key" },
 	{ 0xcf8d2e6f, "kmem_cache_alloc_trace" },
 	{ 0xb44e414c, "kmalloc_caches" },
 	{ 0x1f6e82a4, "__register_chrdev" },
+	{ 0xc1514a3b, "free_irq" },
 	{ 0x37a0cba, "kfree" },
 	{ 0x6bc3fbc0, "__unregister_chrdev" },
 	{ 0xc38c83b8, "mod_timer" },

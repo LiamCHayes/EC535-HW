@@ -276,7 +276,7 @@ static void mytraffic_exit(void) {
             goto free_gpios;
         }
         gpio_set_value(gpios[i], 0);
-        gpio_free(gpio[i]);
+        gpio_free(gpios[i]);
     }
 
     // free irqs and button gpio
@@ -286,6 +286,13 @@ static void mytraffic_exit(void) {
     gpio_free(btn1_gpio);
 
     printk(KERN_ALERT "Removing mytraffic module\n");
+
+free_gpios:
+    // Free all requested GPIOs on error
+    for (i = 0; i < 3; i++) {
+        gpio_free(gpios[i]);
+    }
+    return ret;
 }
 
 static int mytraffic_open(struct inode *inode, struct file *filp) {
