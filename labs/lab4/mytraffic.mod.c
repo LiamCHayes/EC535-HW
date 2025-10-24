@@ -35,6 +35,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x1f6e82a4, "__register_chrdev" },
 	{ 0xc1514a3b, "free_irq" },
 	{ 0x37a0cba, "kfree" },
+	{ 0x2b68bd2f, "del_timer" },
 	{ 0x6bc3fbc0, "__unregister_chrdev" },
 	{ 0xc38c83b8, "mod_timer" },
 	{ 0x526c3a6c, "jiffies" },
