@@ -256,6 +256,7 @@ fail:
 
 static void mytraffic_exit(void) {
     unregister_chrdev(mytraffic_major, "mytraffic");
+    del_timer(timer);
     if (timer)
         kfree(timer);
 
