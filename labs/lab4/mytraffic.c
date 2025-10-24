@@ -182,7 +182,7 @@ static void timer_handler(struct timer_list *data) {
                 mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
                 break;
             case OFF:
-                light_color = RED;
+                light_color = YELLOW;
                 set_light(light_color);
                 mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
                 break;
