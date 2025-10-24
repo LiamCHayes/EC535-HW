@@ -91,7 +91,7 @@ static void set_light(enum LightColor color) {
 
 free_gpios:
     // Free all requested GPIOs on error
-    for (int i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++) {
         gpio_free(gpios[i]);
     }
     return ret;
