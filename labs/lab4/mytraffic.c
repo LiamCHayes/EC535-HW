@@ -100,6 +100,7 @@ free_gpios:
 static struct timer_list * timer; 
 
 static void timer_handler(struct timer_list *data) {
+    printk("entered timer callback");
     // timer logic
     if (mode == NORMAL) {
         switch (light_color) {
@@ -199,6 +200,7 @@ static int mytraffic_init(void) {
     return 0;
 
 fail:
+    printk("failed to load mytraffic.\n");
     mytraffic_exit();
     return result;
 }
