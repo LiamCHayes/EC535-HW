@@ -196,6 +196,10 @@ static int mytraffic_init(void) {
         goto fail;
     }
 
+    // initialize timer in green, normal mode
+    timer_setup(timer, timer_handler, 0);
+    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 3));
+
     printk("mytraffic loaded.\n");
     return 0;
 
@@ -214,9 +218,6 @@ static void mytraffic_exit(void) {
 }
 
 static int mytraffic_open(struct inode *inode, struct file *filp) {
-    // initialize timer in green, normal mode
-    timer_setup(timer, timer_handler, 0);
-    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 3));
     return 0;
 }
 
