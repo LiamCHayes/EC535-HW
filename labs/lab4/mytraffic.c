@@ -51,9 +51,10 @@ static void set_light(enum LightColor color) {
     // TODO set light color with gpio pins
     int ret;
     int gpios[] = {red_gpio, yellow_gpio, green_gpio};
+    int i;
 
     // Set all GPIOs to 0 at first
-    for (int i=0; i<3; i++) {
+    for (i=0; i<3; i++) {
         ret = gpio_request(gpios[i], "my_gpio");
         if (ret) {
             pr_err("Failed to request GPIO %d\n", gpios[i]);
