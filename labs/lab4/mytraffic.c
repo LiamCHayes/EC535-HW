@@ -265,16 +265,6 @@ static void mytraffic_exit(void) {
     int i;
 
     for (i=0; i<3; i++) {
-        ret = gpio_request(gpios[i], "my_gpio");
-        if (ret) {
-            pr_err("Failed to request GPIO %d\n", gpios[i]);
-            goto free_gpios;
-        }
-        ret = gpio_direction_output(gpios[i], 0);
-        if (ret) {
-            pr_err("Failed to set GPIO direction %d\n", gpios[i]);
-            goto free_gpios;
-        }
         gpio_set_value(gpios[i], 0);
         gpio_free(gpios[i]);
     }
