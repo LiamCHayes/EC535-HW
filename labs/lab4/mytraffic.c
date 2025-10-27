@@ -75,7 +75,7 @@ static irqreturn_t button_isr(int irq, void *data) {
 static int red_gpio = 67;
 static int yellow_gpio = 68;
 static int green_gpio = 44;
-static void set_light(enum LightColor color) {
+static int set_light(enum LightColor color) {
     int ret;
     int gpios[] = {red_gpio, yellow_gpio, green_gpio};
     int i;
@@ -114,14 +114,14 @@ static void set_light(enum LightColor color) {
             break;
     }
 
-    //return 0;
+    return 0;
 
 free_gpios:
     // Free all requested GPIOs on error
     for (i = 0; i < 3; i++) {
         gpio_free(gpios[i]);
     }
-    //return ret;
+    return ret;
 }
 
 static struct timer_list * timer; 
