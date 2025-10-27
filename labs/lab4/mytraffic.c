@@ -327,11 +327,11 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     char ped_status[50];
     size_t ped_max = 15;
     char red_status[50];
-    size_t red_max = 5;
+    size_t red_max = 50;
     char yellow_status[50];
-    size_t yellow_max;
+    size_t yellow_max = 50;
     char green_status[50];
-    size_t green_max;
+    size_t green_max = 50;
     
 
     if (light_color == PEDESTRIAN) {
@@ -393,11 +393,7 @@ static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count,
 
     int ret = kstrtoint(msg_buf, 10, &cycle_mod_HZ);
     
-
     cycle_rate_ms = 1000 / cycle_mod_HZ;
-
-
-    printk(KERN_ALERT "%d\n", cycle_mod_HZ);
 
     return count;
 }
