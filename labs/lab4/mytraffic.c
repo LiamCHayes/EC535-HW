@@ -365,7 +365,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     }
 
     size_t len;
-    buf_max += 100;
+    buf_max += 102;
 
     len = scnprintf(buffer, buf_max, "Current operational mode: %s\nCurrent cycle rate: %d Hz\nRed = %s\nYellow = %s\nGreen = %s\nPedestrians are %s\n", current_op_mode, cycle_mod_HZ, red_status, yellow_status, green_status, ped_status);
     buffer[len] = '\0';
