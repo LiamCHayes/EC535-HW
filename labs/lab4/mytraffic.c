@@ -325,7 +325,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     }
 
     char ped_status[50];
-    size_t ped_max = 15;
+    size_t ped_max = 50;
     char red_status[50];
     size_t red_max = 50;
     char yellow_status[50];
