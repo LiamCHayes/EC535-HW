@@ -364,16 +364,11 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     }
 
     int len;
-    size_t buf_max;
-
+    size_t buf_max = 512;
 
     len = scnprintf(buffer, buf_max, "Current operational mode: %s\nCurrent cycle rate: %d Hz\nRed = %s\nYellow = %s\nGreen = %s\n Pedestrians are %s\n", current_op_mode, cycle_mod_HZ, red_status, yellow_status, green_status, ped_status);
 
     printk(KERN_ALERT "%s\n", buffer);
-
-    if(copy_to_user(buf, buffer, len)) {
-    	return -EFAULT;
-    }
 
     *f_pos = len;
 
