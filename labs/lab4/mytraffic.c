@@ -373,9 +373,9 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
 
     printk(KERN_ALERT "%s\n", buffer);
 
-    *f_pos = len - 104;
+    *f_pos += len;
 
-    return len - 104;
+    return len;
 }
 
 static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos) {
