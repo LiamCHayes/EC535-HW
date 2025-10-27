@@ -342,7 +342,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
 	buf_max += scnprintf(green_status, green_max, "off");
 	buf_max += scnprintf(yellow_status, yellow_max, "on");
     }
-    if (light_color == GREEN) {
+    else if (light_color == GREEN) {
 	buf_max += scnprintf(ped_status, ped_max, "not present");
 	buf_max += scnprintf(red_status, red_max, "off");
 	buf_max += scnprintf(green_status, green_max, "on");
