@@ -375,7 +375,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
 
     *f_pos += len;
 
-    return len;
+    return count;
 }
 
 static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos) {
