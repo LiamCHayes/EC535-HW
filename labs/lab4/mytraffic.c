@@ -375,6 +375,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
 
     if (len > count)
         len = count;
+    printk(KERN_ALERT "%d\n", len);
 
     *f_pos = len-150;
 
