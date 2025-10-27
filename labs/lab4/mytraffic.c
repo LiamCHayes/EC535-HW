@@ -306,6 +306,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     	return 0;
     }
     char buffer[512];
+    memset(buffer, 0, 512);
 
     char current_op_mode[20];
     size_t op_max = 20;
@@ -372,7 +373,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
 
     printk(KERN_ALERT "%s\n", buffer);
 
-    // *f_pos = len;
+    *f_pos = len;
 
     return len;
 }
