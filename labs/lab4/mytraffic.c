@@ -302,23 +302,25 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     //      current cycle rate
     //      current status of lights
     //      current pedestrian status
+    printk(KERN_ALERT "test\n");
     if (*f_pos > 0) {
     	return 0;
     }
     char buffer[512];
     memset(buffer, 0, 512);
+    size_t buf_max = 0;
 
     char current_op_mode[20];
     size_t op_max = 20;
 
     if (mode == NORMAL) {
-	scnprintf(current_op_mode, op_max, "NORMAL");
+	buf_max += scnprintf(current_op_mode, op_max, "NORMAL");
     } 
     else if (mode == FLASHING_RED) {
-	scnprintf(current_op_mode, op_max, "FLASHING RED");
+	buf_max += scnprintf(current_op_mode, op_max, "FLASHING RED");
     }
     else if (mode == FLASHING_YELLOW) {
-	scnprintf(current_op_mode, op_max, "FLASHING YELLOW");
+	buf_max += scnprintf(current_op_mode, op_max, "FLASHING YELLOW");
     }
     else {
     	printk(KERN_ALERT "OP MODE SELECTION ERROR\n");
@@ -334,7 +336,6 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     char green_status[50];
     size_t green_max = 50;
     
-    size_t buf_max = 0;
 
     if (light_color == PEDESTRIAN) {
 	buf_max += scnprintf(ped_status, ped_max, "present");
@@ -366,7 +367,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     }
 
     size_t len;
-    buf_max += 102;
+    buf_max += 96;
 
     len = scnprintf(buffer, buf_max, "Current operational mode: %s\nCurrent cycle rate: %d Hz\nRed = %s\nYellow = %s\nGreen = %s\nPedestrians are %s\n", current_op_mode, cycle_mod_HZ, red_status, yellow_status, green_status, ped_status);
     buffer[len] = '\0';
@@ -391,7 +392,6 @@ static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count,
     	printk(KERN_ALERT "COPY ERROR\n");
 	return -EFAULT;
     }
-    printk(KERN_ALERT "test\n");
 
     msg_buf[count] = '\0';
 
