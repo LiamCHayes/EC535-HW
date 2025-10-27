@@ -807,6 +807,16 @@ deps_/ad/eng/users/l/i/liamh/EC535/EC535-HW/labs/lab4/mytraffic.o := \
   include/linux/irq_cpustat.h \
   arch/arm/include/asm/sections.h \
   include/asm-generic/sections.h \
+  include/linux/uaccess.h \
+  arch/arm/include/asm/uaccess.h \
+    $(wildcard include/config/cpu/sw/domain/pan.h) \
+    $(wildcard include/config/cpu/use/domains.h) \
+    $(wildcard include/config/uaccess/with/memcpy.h) \
+  arch/arm/include/asm/domain.h \
+    $(wildcard include/config/io/36.h) \
+    $(wildcard include/config/cpu/cp15/mmu.h) \
+  arch/arm/include/generated/asm/extable.h \
+  include/asm-generic/extable.h \
 
 /ad/eng/users/l/i/liamh/EC535/EC535-HW/labs/lab4/mytraffic.o: $(deps_/ad/eng/users/l/i/liamh/EC535/EC535-HW/labs/lab4/mytraffic.o)
 
