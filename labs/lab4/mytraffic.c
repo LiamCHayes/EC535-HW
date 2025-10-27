@@ -360,6 +360,12 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
 	buf_max += scnprintf(green_status, green_max, "off");
 	buf_max += scnprintf(yellow_status, yellow_max, "off");
     }
+    else if (light_color == OFF) {
+	buf_max += scnprintf(ped_status, ped_max, "not present");
+	buf_max += scnprintf(red_status, red_max, "off");
+	buf_max += scnprintf(green_status, green_max, "off");
+	buf_max += scnprintf(yellow_status, yellow_max, "off");
+    }
     else {
     	printk(KERN_ALERT "PROBLEM WITH IF ELSE PRINT\n");
     	return -EFAULT;
