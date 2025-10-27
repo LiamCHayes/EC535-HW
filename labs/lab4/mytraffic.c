@@ -302,12 +302,11 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     //      current cycle rate
     //      current status of lights
     //      current pedestrian status
-    printk(KERN_ALERT "test\n");
     if (*f_pos > 0) {
     	return 0;
     }
-    char buffer[512];
-    memset(buffer, 0, 512);
+    char buffer[256];
+    memset(buffer, 0, 256);
     size_t buf_max = 0;
 
     char current_op_mode[20];
@@ -376,7 +375,7 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
 
     *f_pos = len;
 
-    return len;
+    return count;
 }
 
 static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos) {
