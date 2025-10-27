@@ -391,7 +391,7 @@ static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count,
     	printk(KERN_ALERT "COPY ERROR\n");
 	return -EFAULT;
     }
-    printk(KERN_ALERT "test\n", buffer);
+    printk(KERN_ALERT "test\n");
 
     msg_buf[count] = '\0';
 
