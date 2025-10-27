@@ -333,40 +333,40 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     char green_status[50];
     size_t green_max = 50;
     
+    size_t buf_max = 0;
 
     if (light_color == PEDESTRIAN) {
-	scnprintf(ped_status, ped_max, "present");
-	scnprintf(red_status, red_max, "on");
-	scnprintf(green_status, green_max, "off");
-	scnprintf(yellow_status, yellow_max, "on");
+	buf_max += scnprintf(ped_status, ped_max, "present");
+	buf_max += scnprintf(red_status, red_max, "on");
+	buf_max += scnprintf(green_status, green_max, "off");
+	buf_max += scnprintf(yellow_status, yellow_max, "on");
     }
     if (light_color == GREEN) {
-	scnprintf(ped_status, ped_max, "not present");
-	scnprintf(red_status, red_max, "off");
-	scnprintf(green_status, green_max, "on");
-	scnprintf(yellow_status, yellow_max, "off");
+	buf_max += scnprintf(ped_status, ped_max, "not present");
+	buf_max += scnprintf(red_status, red_max, "off");
+	buf_max += scnprintf(green_status, green_max, "on");
+	buf_max += scnprintf(yellow_status, yellow_max, "off");
     }
     else if (light_color == YELLOW) {
-	scnprintf(ped_status, ped_max, "not present");
-	scnprintf(red_status, red_max, "off");
-	scnprintf(green_status, green_max, "off");
-	scnprintf(yellow_status, yellow_max, "on");
+	buf_max += scnprintf(ped_status, ped_max, "not present");
+	buf_max += scnprintf(red_status, red_max, "off");
+	buf_max += scnprintf(green_status, green_max, "off");
+	buf_max += scnprintf(yellow_status, yellow_max, "on");
     }
     else if (light_color == RED) {
-	scnprintf(ped_status, ped_max, "not present");
-	scnprintf(red_status, red_max, "on");
-	scnprintf(green_status, green_max, "off");
-	scnprintf(yellow_status, yellow_max, "off");
+	buf_max += scnprintf(ped_status, ped_max, "not present");
+	buf_max += scnprintf(red_status, red_max, "on");
+	buf_max += scnprintf(green_status, green_max, "off");
+	buf_max += scnprintf(yellow_status, yellow_max, "off");
     }
     else {
     	printk(KERN_ALERT "PROBLEM WITH IF ELSE PRINT\n");
     	return -EFAULT;
     }
 
-    int len;
-    size_t buf_max = 512;
+    size_t len;
 
-    len = scnprintf(buffer, buf_max, "Current operational mode: %s\nCurrent cycle rate: %d Hz\nRed = %s\nYellow = %s\nGreen = %s\n Pedestrians are %s\n", current_op_mode, cycle_mod_HZ, red_status, yellow_status, green_status, ped_status);
+    len = scnprintf(buffer, buf_max, "Current operational mode: %s\nCurrent cycle rate: %d Hz\nRed = %s\nYellow = %s\nGreen = %s\nPedestrians are %s\n", current_op_mode, cycle_mod_HZ, red_status, yellow_status, green_status, ped_status);
 
     printk(KERN_ALERT "%s\n", buffer);
 
