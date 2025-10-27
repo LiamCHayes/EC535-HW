@@ -5,6 +5,7 @@
 #include <linux/gpio.h>
 #include <linux/interrupt.h>
 #include <linux/irq.h>
+#include <linux/uaccess.h>
 
 MODULE_LICENSE("Dual BSD/GPL");
 
@@ -38,7 +39,8 @@ static int mytraffic_major = 61;
 // Traffic light
 enum Mode {NORMAL, FLASHING_RED, FLASHING_YELLOW};
 enum LightColor {RED, YELLOW, GREEN, PEDESTRIAN, OFF};
-int cycle_rate_seconds = 1;
+static int cycle_mod_HZ = 1;
+static int  cycle_rate_ms = 1000;
 int pedestrian = 0;
 
 static enum Mode mode = NORMAL;
@@ -112,14 +114,14 @@ static void set_light(enum LightColor color) {
             break;
     }
 
-    return 0;
+    //return 0;
 
 free_gpios:
     // Free all requested GPIOs on error
     for (i = 0; i < 3; i++) {
         gpio_free(gpios[i]);
     }
-    return ret;
+    //return ret;
 }
 
 static struct timer_list * timer; 
@@ -131,29 +133,29 @@ static void timer_handler(struct timer_list *data) {
             case GREEN:
                 light_color = YELLOW;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 1));
                 break;
             case YELLOW:
                 if (pedestrian == 1) {
                     light_color = PEDESTRIAN;
                     set_light(light_color);
-                    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 5));
+                    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 5));
                 } else if (pedestrian == 0) {
                     light_color = RED;
                     set_light(light_color);
-                    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 2));
+                    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 2));
                 }
                 break;
             case RED:
                 light_color = GREEN;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 3));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 3));
                 break;
             case PEDESTRIAN:
                 pedestrian = 0;
                 light_color = GREEN;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 3));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 3));
                 break;
         }
     } else if (mode == FLASHING_RED) {
@@ -161,17 +163,17 @@ static void timer_handler(struct timer_list *data) {
             case RED:
                 light_color = OFF;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 1));
                 break;
             case OFF:
                 light_color = RED;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 1));
                 break;
             default:
                 light_color = RED;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 1));
                 break;
         }
     } else if (mode == FLASHING_YELLOW) {
@@ -179,17 +181,17 @@ static void timer_handler(struct timer_list *data) {
             case YELLOW:
                 light_color = OFF;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 1));
                 break;
             case OFF:
                 light_color = YELLOW;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 1));
                 break;
             default:
                 light_color = YELLOW;
                 set_light(light_color);
-                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 1));
+                mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 1));
                 break;
         }
     }
@@ -222,7 +224,7 @@ static int mytraffic_init(void) {
 
     // initialize timer in green, normal mode
     timer_setup(timer, timer_handler, 0);
-    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_seconds * 1000 * 3));
+    mod_timer(timer, jiffies + msecs_to_jiffies(cycle_rate_ms * 3));
 
     // Set up button interrupts
     int ret;
@@ -278,12 +280,12 @@ static void mytraffic_exit(void) {
 
     printk(KERN_ALERT "Removing mytraffic module\n");
 
-free_gpios:
+//free_gpios:
     // Free all requested GPIOs on error
-    for (i = 0; i < 3; i++) {
-        gpio_free(gpios[i]);
-    }
-    return ret;
+   // for (i = 0; i < 3; i++) {
+       // gpio_free(gpios[i]);
+    //}
+    //return ret;
 }
 
 static int mytraffic_open(struct inode *inode, struct file *filp) {
@@ -300,11 +302,105 @@ static ssize_t mytraffic_read(struct file *filp, char *buf, size_t count, loff_t
     //      current cycle rate
     //      current status of lights
     //      current pedestrian status
+    if (*f_pos > 0) {
+    	return 0;
+    }
+    char buffer[512];
 
-    return count;
+    char current_op_mode[20];
+    size_t op_max = 20;
+
+    if (mode == NORMAL) {
+	scnprintf(current_op_mode, op_max, "NORMAL");
+    } 
+    else if (mode == FLASHING_RED) {
+	scnprintf(current_op_mode, op_max, "FLASHING RED");
+    }
+    else if (mode == FLASHING_YELLOW) {
+	scnprintf(current_op_mode, op_max, "FLASHING YELLOW");
+    }
+    else {
+    	printk(KERN_ALERT "OP MODE SELECTION ERROR\n");
+    	return -EFAULT;
+    }
+
+    char ped_status[15];
+    size_t ped_max = 15;
+    char red_status[5];
+    size_t red_max = 5;
+    char yellow_status[5];
+    size_t yellow_max;
+    char green_status[5];
+    size_t green_max;
+    
+
+    if (light_color == PEDESTRIAN) {
+	scnprintf(ped_status, ped_max, "present");
+	scnprintf(red_status, red_max, "on");
+	scnprintf(green_status, green_max, "off");
+	scnprintf(yellow_status, yellow_max, "on");
+    }
+    if (light_color == GREEN) {
+	scnprintf(ped_status, ped_max, "not present");
+	scnprintf(red_status, red_max, "off");
+	scnprintf(green_status, green_max, "on");
+	scnprintf(yellow_status, yellow_max, "off");
+    }
+    else if (light_color == YELLOW) {
+	scnprintf(ped_status, ped_max, "not present");
+	scnprintf(red_status, red_max, "off");
+	scnprintf(green_status, green_max, "off");
+	scnprintf(yellow_status, yellow_max, "on");
+    }
+    else if (light_color == RED) {
+	scnprintf(ped_status, ped_max, "not present");
+	scnprintf(red_status, red_max, "on");
+	scnprintf(green_status, green_max, "off");
+	scnprintf(yellow_status, yellow_max, "off");
+    }
+    else {
+    	printk(KERN_ALERT "PROBLEM WITH IF ELSE PRINT\n");
+    	return -EFAULT;
+    }
+
+    int len;
+    size_t buf_max;
+
+
+    len = scnprintf(buffer, buf_max, "Current operational mode: %s\nCurrent cycle rate: %d Hz\nRed = %s\nYellow = %s\nGreen = %s\n Pedestrians are %s\n", current_op_mode, cycle_mod_HZ, red_status, yellow_status, green_status, ped_status);
+
+    if(copy_to_user(buf, buffer, len)) {
+    	return -EFAULT;
+    }
+
+    *f_pos = len;
+
+    return len;
 }
 
 static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count, loff_t *f_pos) {
     // TODO alter cycle rate
+    char msg_buf[256];
+
+    if (count >= 256) {
+        printk(KERN_ALERT "%d >= 256\n", count);
+	return -EINVAL;
+    }
+
+    if (copy_from_user(msg_buf, buf, count)) {
+    	printk(KERN_ALERT "COPY ERROR\n");
+	return -EFAULT;
+    }
+
+    msg_buf[count] = '\0';
+
+    int ret = kstrtoint(msg_buf, 10, &cycle_mod_HZ);
+    
+
+    cycle_rate_ms = 1000 / cycle_mod_HZ;
+
+
+    printk(KERN_ALERT "%d\n", cycle_mod_HZ);
+
     return count;
 }
