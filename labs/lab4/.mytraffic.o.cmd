@@ -15,6 +15,7 @@ deps_/ad/eng/users/l/i/liamh/EC535/EC535-HW/labs/lab4/mytraffic.o := \
   include/linux/compiler-gcc.h \
     $(wildcard include/config/retpoline.h) \
     $(wildcard include/config/arch/use/builtin/bswap.h) \
+  include/uapi/asm-generic/errno-base.h \
   include/linux/module.h \
     $(wildcard include/config/modules.h) \
     $(wildcard include/config/sysfs.h) \
@@ -352,7 +353,6 @@ deps_/ad/eng/users/l/i/liamh/EC535/EC535-HW/labs/lab4/mytraffic.o := \
   include/uapi/linux/errno.h \
   arch/arm/include/generated/uapi/asm/errno.h \
   include/uapi/asm-generic/errno.h \
-  include/uapi/asm-generic/errno-base.h \
   include/linux/mutex.h \
     $(wildcard include/config/mutex/spin/on/owner.h) \
   include/linux/osq_lock.h \
