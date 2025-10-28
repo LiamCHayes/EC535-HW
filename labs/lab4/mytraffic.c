@@ -1,3 +1,4 @@
+#include <asm-generic/errno-base.h>
 #include <linux/module.h>
 #include <linux/kernel.h> 
 #include <linux/jiffies.h> 
@@ -405,6 +406,11 @@ static ssize_t mytraffic_write(struct file *filp, const char *buf, size_t count,
 
     int ret = kstrtoint(msg_buf, 10, &cycle_mod_HZ);
     
+    if (cycle_mod_HZ > 9) {
+        printk(KERN_ALERT "Cannot set HZ to larger than 9\n");
+        return -EFAULT;
+    }
+
     cycle_rate_ms = 1000 / cycle_mod_HZ;
 
     return count;
