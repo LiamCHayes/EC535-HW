@@ -1,0 +1,3 @@
+# HW2
+
+The main optimization I used was switch statements instead of if else statements. I also cleaned up my logic from the first pass and removed/consolidated unnecessary parts.
