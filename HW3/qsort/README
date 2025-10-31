@@ -1,0 +1,11 @@
+1. 
+Without optimization or debugging:
+real    0m0.049s
+user    0m0.018s
+sys     0m0.002s
+
+With optimization and debugging:
+real    0m0.038s
+user    0m0.011s
+sys     0m0.007s
+
