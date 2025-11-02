@@ -3,7 +3,7 @@
 #include <math.h>
 
 #define UNLIMIT
-#define MAXARRAY 60000 /* this number, if too large, will cause a seg. fault!! */
+#define MAXARRAY 300000 /* this number, if too large, will cause a seg. fault!! */
 
 struct my3DVertexStruct {
   int x, y, z;
@@ -24,8 +24,7 @@ int compare(const void *elem1, const void *elem2)
 }
 
 
-int
-main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {
   struct my3DVertexStruct array[MAXARRAY];
   FILE *fp;
   int i,count=0;
