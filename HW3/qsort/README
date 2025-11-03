@@ -9,12 +9,48 @@ real    0m0.038s
 user    0m0.011s
 sys     0m0.007s
 
-2. 
+2.
+Flat profile:
+
 Each sample counts as 0.01 seconds.
-%   cumulative   self              self     total
-time   seconds   seconds    calls  Ts/call  Ts/call  name
-102.26      0.01     0.01                             compare
+  %   cumulative   self              self     total
+ time   seconds   seconds    calls  Ts/call  Ts/call  name
+ 88.32      0.04     0.04                             compare
+ 12.62      0.04     0.01                             frame_dummy
 
 3.
-The compare function takes the most percentage, with 102.26% of the time. This is becuase the profiler couldn't get a good read because the program was too fast. Either way, the compare function takes the majority of the time.
+The compare function takes the most percentage, with 88% of the time.
+
+4. 
+
+With -O looping qsort 100 times:
+
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total
+ time   seconds   seconds    calls  Ts/call  Ts/call  name
+101.19      0.01     0.01                             compare
+
+With -O2 looping qsort 100 times:
+
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total
+ time   seconds   seconds    calls  Ts/call  Ts/call  name
+ 68.17      0.02     0.02                             frame_dummy
+ 34.09      0.03     0.01                             compare
+
+With -O3 looping qsort 300 times:
+
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total
+ time   seconds   seconds    calls  Ts/call  Ts/call  name
+ 58.43      0.04     0.04                             frame_dummy
+ 43.82      0.07     0.03                             compare
+
+
 
