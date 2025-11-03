@@ -10,7 +10,7 @@ struct my3DVertexStruct {
   double distance;
 };
 
-int inline compare(const void *elem1, const void *elem2)
+int compare(const void *elem1, const void *elem2)
 {
   /* D = [(x1 - x2)^2 + (y1 - y2)^2 + (z1 - z2)^2]^(1/2) */
   /* sort based on distances from the origin... */
