@@ -15,10 +15,11 @@ int compare(const void *elem1, const void *elem2)
   /* D = [(x1 - x2)^2 + (y1 - y2)^2 + (z1 - z2)^2]^(1/2) */
   /* sort based on distances from the origin... */
 
-  double distance1, distance2;
-
-  distance1 = (*((struct my3DVertexStruct *)elem1)).distance;
-  distance2 = (*((struct my3DVertexStruct *)elem2)).distance;
+  // liamh removing repeated dereferencing
+  const struct my3DVertexStruct *v1 = (const struct my3DVertexStruct *)elem1;
+  const struct my3DVertexStruct *v2 = (const struct my3DVertexStruct *)elem2;
+  double distance1 = v1->distance;
+  double distance2 = v2->distance;
 
   return (distance1 > distance2) ? 1 : ((distance1 == distance2) ? 0 : -1);
 }
