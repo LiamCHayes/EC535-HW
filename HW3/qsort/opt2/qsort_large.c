@@ -20,7 +20,7 @@ int compare(const void *elem1, const void *elem2)
   distance1 = (*((struct my3DVertexStruct *)elem1)).distance;
   distance2 = (*((struct my3DVertexStruct *)elem2)).distance;
 
-  // liamh use boolean arithmetic isntead of if else
+  // liamh use boolean arithmetic to avoid branching
   return (distance1 > distance2) - (distance1 < distance2);
 }
 
