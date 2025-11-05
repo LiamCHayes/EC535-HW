@@ -12,13 +12,13 @@ For the optimization, I am summing over 1000 runs on the grid and 50 runs on the
 +-----------------------+--------------------+--------------------+
 |Optimizations           |Time on eng-grid    |Time on BeagleBone |
 +-----------------------+--------------------+--------------------+
-|Default                 | 0m44.280s          | 0m8.16s           |
+|Default                 | 0m44.280s          |           |
 +-----------------------+--------------------+--------------------+
 |myOptimization1         | 0m43.802s          | |
 +-----------------------+--------------------+--------------------+
-|myOptimization2         | 0m40.827s          |  |
+|myOptimization2         | 0m40.827s          | 0m41.77s          |
 +-----------------------+--------------------+--------------------+
-|Optional 1 & 2 combined | 0m42.239s          | |
+|Optional 1 & 2 combined | 0m42.239s          | 0m42.49s          |
 +-----------------------+--------------------+--------------------+
 myOptimization1: Instead of using the ? operator in the compare function, I used boolean algebra to optimize for branch prediction.
 myOptimization2: I used the optimizer flag -Ofast.
