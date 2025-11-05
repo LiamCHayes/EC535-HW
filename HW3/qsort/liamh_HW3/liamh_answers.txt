@@ -1,0 +1,24 @@
+-------------------------------------------------------------------
+Profiling Results
+-------------------------------------------------------------------
+I am looping the qsort line 300 times to get more readable gprof results.
+
+qsort_large spends 88.32% of its time executing the function compare based on the flat profile.
+
+-------------------------------------------------------------------
+Optimization
+-------------------------------------------------------------------
++-----------------------+--------------------+--------------------+
+|Optimizations |Time on eng-grid |Time on BeagleBone |
++-----------------------+--------------------+--------------------+
+|Default | 0m0.620s |  |
++-----------------------+--------------------+--------------------+
+|myOptimization1 |  | |
++-----------------------+--------------------+--------------------+
+|myOptimization2 |  |  |
++-----------------------+--------------------+--------------------+
+|Optional 1 & 2 combined|  | |
++-----------------------+--------------------+--------------------+
+myOptimization1: Instead of using the ? operator in the compare function, I used boolean algebra to optimize for branch prediction.
+myOptimization2: I used the optimizer flag -Ofast.
+Difference btw grid and embedded: Comments on timing differences at most in 250 characters.
