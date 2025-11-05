@@ -8,11 +8,11 @@ qsort_large spends 88.32% of its time executing the function compare based on th
 -------------------------------------------------------------------
 Optimization
 -------------------------------------------------------------------
-For the optimization, I am summing over 1000 runs.
+For the optimization, I am summing over 1000 runs on the grid and 50 runs on the BeagleBone.
 +-----------------------+--------------------+--------------------+
 |Optimizations           |Time on eng-grid    |Time on BeagleBone |
 +-----------------------+--------------------+--------------------+
-|Default                 | 0m44.280s          |  |
+|Default                 | 0m44.280s          | 0m8.16s           |
 +-----------------------+--------------------+--------------------+
 |myOptimization1         | 0m43.802s          | |
 +-----------------------+--------------------+--------------------+
