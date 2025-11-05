@@ -18,8 +18,8 @@ For the optimization, I am summing over 1000 runs on the grid and 50 runs on the
 +-----------------------+--------------------+--------------------+
 |myOptimization2         | 0m40.827s          | 0m30.69s          |
 +-----------------------+--------------------+--------------------+
-|Optional 1 & 2 combined | 0m42.239s          |           |
+|Optional 1 & 2 combined | 0m42.239s          | 0m30.55s          |
 +-----------------------+--------------------+--------------------+
 myOptimization1: Instead of using the ? operator in the compare function, I used boolean algebra to optimize for branch prediction.
 myOptimization2: I used the optimizer flag -Ofast.
-Difference btw grid and embedded: Comments on timing differences at most in 250 characters.
+Difference btw grid and embedded: BeagleBone might not use branch prediction, so that could be why the first optimization did not do much. Optimization is much more important on embedded system with less compute, runs over 100 times slower.
