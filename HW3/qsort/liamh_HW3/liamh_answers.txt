@@ -8,16 +8,17 @@ qsort_large spends 88.32% of its time executing the function compare based on th
 -------------------------------------------------------------------
 Optimization
 -------------------------------------------------------------------
+For the optimization, I am summing over 1000 runs.
 +-----------------------+--------------------+--------------------+
-|Optimizations |Time on eng-grid |Time on BeagleBone |
+|Optimizations           |Time on eng-grid    |Time on BeagleBone |
 +-----------------------+--------------------+--------------------+
-|Default | 0m0.620s |  |
+|Default                 | 0m44.280s          |  |
 +-----------------------+--------------------+--------------------+
-|myOptimization1 |  | |
+|myOptimization1         | 0m43.802s          | |
 +-----------------------+--------------------+--------------------+
-|myOptimization2 |  |  |
+|myOptimization2         | 0m40.827s          |  |
 +-----------------------+--------------------+--------------------+
-|Optional 1 & 2 combined|  | |
+|Optional 1 & 2 combined | 0m42.239s          | |
 +-----------------------+--------------------+--------------------+
 myOptimization1: Instead of using the ? operator in the compare function, I used boolean algebra to optimize for branch prediction.
 myOptimization2: I used the optimizer flag -Ofast.
