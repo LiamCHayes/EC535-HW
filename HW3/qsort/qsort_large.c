@@ -46,7 +46,6 @@ int main(int argc, char *argv[]) {
     }
   }
   printf("\nSorting %d vectors based on distance from the origin.\n\n",count);
-  int j;
   qsort(array,count,sizeof(struct my3DVertexStruct),compare);
   
   for(i=0;i<count;i++)
