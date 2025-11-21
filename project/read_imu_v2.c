@@ -49,6 +49,7 @@ int main() {
     }
 
     // Who am i test
+    printf("Who Am I test\n");
     data_addr_buffer[0] = WHO_AM_I_REG;
     if (write(file_handle, data_addr_buffer, 1) != 1) {
         perror("Failed to write to who am I register");
@@ -68,7 +69,8 @@ int main() {
             printf("0");
         }
     }
-    printf("\n"); // Print a newline character at the end
+    printf("\n");
+    sleep(1);
 
     printf("[INFO] Initializing...\n");
 
@@ -92,7 +94,7 @@ int main() {
     
     // High performance mode
     buffer[0] = CTRL1_XL;
-    buffer[1] = 0x60;
+    buffer[1] = 0x40;
     if (write(file_handle, buffer, 2) != 2) {
         perror("Failed to enable high performance mode accelerometer");
         close(file_handle);
