@@ -65,10 +65,9 @@ int main() {
 
     printf("[INFO] Initializing...\n");
 
-    // Enable block data update 
-    // NOTE this is setting the whole BDU register, which contains settings for address auto-increment and endianness. If we want to chnage these we need to set only bit 6 of this byte
+    // Enable block data update and auto-increment
     buffer[0] = CTRL3_C;
-    buffer[1] = 0x40;
+    buffer[1] = 0x44;
     if (write(file_handle, buffer, 2) != 2) {
         perror("Failed to enable block data update");
         close(file_handle);
