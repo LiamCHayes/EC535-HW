@@ -5,10 +5,12 @@
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
 #include <errno.h>
+#include <stdint.h>
 
 #define I2C_BUS_FILE "/dev/i2c-2"
-#define DEVICE_ADDRESS 0x6A
-#define REGISTER_ADDRESS 0x28
+#define DEVICE_ADDRESS 0x6B
+#define REGISTER_ADDRESS 0x18
+#define WHO_AM_I_REG 0x0F
 
 int main() {
     int file_handle;
@@ -28,9 +30,20 @@ int main() {
         exit(1);
     }
 
-    // --- Read from a specific register (common pattern) ---
-    // Some devices require you to write the register address first,
-    // then read the data in a combined operation or separate operations.
+    // Who am i test
+    uint8_t config[2] = {WHO_AM_I_REG, 0x00};
+    if (write(file_handle, config, 1) != 1) {
+            perror("Failed to write to the i2c device");
+            exit(1);
+    }
+
+    uint8_t value;
+    if (read(file_handle, &value, 1) != 1) {
+            perror("Failed to read from the i2c device");
+            exit(1);
+    } else {
+        printf("Value read from register 0x%02X at address 0x%02X: 0x%02X\n", WHO_AM_I_REG, REGISTER_ADDRESS, value);
+    }
 
     // 1. Specify the register address to read from
     for (int i=0; i < 1000; i++) {
