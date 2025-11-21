@@ -137,6 +137,7 @@ int main() {
         }
 
         int first_bit = status_data[0] >> (CHAR_BIT - 1) & 1;
+        printf("Status data: %s\n", status_data);
         printf("Data ready: %d\n", first_bit);
         if (!first_bit) {
             continue;
