@@ -62,7 +62,7 @@ int main() {
         // printf("Value read from register 0x%02X at address 0x%02X: 0x%02X\n", WHO_AM_I_REG, REGISTER_ADDRESS, value);
     // }
 
-    printf("[INFO] Initializing...\n")
+    printf("[INFO] Initializing...\n");
 
     // Enable acceleration axes
     buffer[2] = {CTRL9_XL, 0x38};
@@ -113,7 +113,7 @@ int main() {
     }
 
     sleep(1);
-    printf("[INFO] Initialized\n")
+    printf("[INFO] Initialized\n");
 
     // Read data for a certain amount of time
     for (int i=0; i < 1000; i++) {
