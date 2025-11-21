@@ -220,13 +220,12 @@ int main() {
         }
         
         // print buffers
-        // TODO add null terminators at the end of each char array
-        printf("Acceleration x low: %02x\n", (unsigned int)acc_x_l[0]);
-        printf("Acceleration x high: %02x\n", (unsigned int)acc_x_h[0]);
-        printf("Acceleration y low: %02x\n", (unsigned int)acc_y_l[0]);
-        printf("Acceleration y high: %02x\n", (unsigned int)acc_y_h[0]);
-        printf("Acceleration z low: %02x\n", (unsigned int)acc_z_l[0]);
-        printf("Acceleration z high: %02x\n", (unsigned int)acc_z_h[0]);
+        printf("Acceleration x low: %c\n", acc_x_l[0]);
+        printf("Acceleration x high: %c\n", acc_x_h[0]);
+        printf("Acceleration y low: %c\n", acc_y_l[0]);
+        printf("Acceleration y high: %c\n", acc_y_h[0]);
+        printf("Acceleration z low: %c\n", acc_z_l[0]);
+        printf("Acceleration z high: %c\n", acc_z_h[0]);
         
         // int accelX = (data[0] << 8) | data[1];
         // int accelY = (data[2] << 8) | data[3];
