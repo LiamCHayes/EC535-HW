@@ -48,30 +48,6 @@ int main() {
         exit(1);
     }
 
-    // Who am i test
-    printf("Who Am I test\n");
-    data_addr_buffer[0] = WHO_AM_I_REG;
-    if (write(file_handle, data_addr_buffer, 1) != 1) {
-        perror("Failed to write to who am I register");
-        close(file_handle);
-        exit(1);
-    }
-    unsigned char whoami_data[1] = {0};
-    if (read(file_handle, whoami_data, 1) != 1) {
-        perror("Failed to read who am I data");
-        exit(1);
-    }
-    for (int i = (CHAR_BIT * sizeof(unsigned char)) - 1; i >= 0; i--) {
-        unsigned char mask = 1 << i;
-        if (whoami_data[0] & mask) {
-            printf("1");
-        } else {
-            printf("0");
-        }
-    }
-    printf("\n");
-    sleep(1);
-
     printf("[INFO] Initializing...\n");
 
     // Enable block data update and auto-increment
@@ -131,6 +107,30 @@ int main() {
     sleep(1);
     printf("[INFO] Initialized\n");
 
+    // Who am i test
+    printf("Who Am I test\n");
+    data_addr_buffer[0] = WHO_AM_I_REG;
+    if (write(file_handle, data_addr_buffer, 1) != 1) {
+        perror("Failed to write to who am I register");
+        close(file_handle);
+        exit(1);
+    }
+    unsigned char whoami_data[1] = {0};
+    if (read(file_handle, whoami_data, 1) != 1) {
+        perror("Failed to read who am I data");
+        exit(1);
+    }
+    for (int i = (CHAR_BIT * sizeof(unsigned char)) - 1; i >= 0; i--) {
+        unsigned char mask = 1 << i;
+        if (whoami_data[0] & mask) {
+            printf("1");
+        } else {
+            printf("0");
+        }
+    }
+    printf("\n");
+    sleep(2);
+
     // Read data for a certain amount of time
     for (int i=0; i < 1000; i++) {
         // Check if there is new data ready
@@ -177,6 +177,29 @@ int main() {
 
         printf("Acceleration raw: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
         printf("Acceleration grams X: %.3f, Y: %.3f, Z: %.3f\n", accelX_g, accelY_g, accelZ_g);
+            
+        // Who am i test
+        printf("Who Am I test\n");
+        data_addr_buffer[0] = WHO_AM_I_REG;
+        if (write(file_handle, data_addr_buffer, 1) != 1) {
+            perror("Failed to write to who am I register");
+            close(file_handle);
+            exit(1);
+        }
+        unsigned char whoami_data[1] = {0};
+        if (read(file_handle, whoami_data, 1) != 1) {
+            perror("Failed to read who am I data");
+            exit(1);
+        }
+        for (int i = (CHAR_BIT * sizeof(unsigned char)) - 1; i >= 0; i--) {
+            unsigned char mask = 1 << i;
+            if (whoami_data[0] & mask) {
+                printf("1");
+            } else {
+                printf("0");
+            }
+        }
+        printf("\n");
     }
 
     // Close the file handle
