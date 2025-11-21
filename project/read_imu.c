@@ -8,7 +8,7 @@
 
 #define I2C_BUS_FILE "/dev/i2c-2"
 #define DEVICE_ADDRESS 0x6A
-#define REGISTER_ADDRESS 0x00    // Replace with the register you want to read from
+#define REGISTER_ADDRESS 0x28
 
 int main() {
     int file_handle;
@@ -42,7 +42,7 @@ int main() {
         }
 
         char data[6] = {0}; // For X, Y, Z accelerometer data (high
-        if (read(file_handle, result_buffer, 6) != 6) {
+        if (read(file_handle, data, 6) != 6) {
             perror("Failed to read from the i2c bus");
             exit(1);
         }
@@ -52,7 +52,6 @@ int main() {
         int accelY = (data[2] << 8) | data[3];
         int accelZ = (data[4] << 8) | data[5];
 
-        printf("Acceleration X: %d\n", accelX);
         printf("Acceleration X: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
     }
 
