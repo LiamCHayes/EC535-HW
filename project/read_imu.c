@@ -49,7 +49,6 @@ int main() {
         int16_t accelZ = (data[4] << 8) | data[5];
 
         printf("Acceleration X: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
-        usleep(100000);
     }
 
 	close(file);
