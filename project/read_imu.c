@@ -136,6 +136,7 @@ int main() {
             exit(1);
         }
 
+        // TODO understand why this isn't working
         int first_bit = status_data[0] >> (CHAR_BIT - 1) & 1;
         // printf("Status data: %d\n", status_data);
         // printf("Data ready: %d\n", first_bit);
@@ -220,18 +221,18 @@ int main() {
         }
         
         // print buffers
-        printf("Acceleration x low: %c\n", acc_x_l[0]);
-        printf("Acceleration x high: %c\n", acc_x_h[0]);
-        printf("Acceleration y low: %c\n", acc_y_l[0]);
-        printf("Acceleration y high: %c\n", acc_y_h[0]);
-        printf("Acceleration z low: %c\n", acc_z_l[0]);
-        printf("Acceleration z high: %c\n", acc_z_h[0]);
+        // TODO combine low and high to get float16 number
+        // printf("Acceleration x low: %c\n", acc_x_l[0]);
+        // printf("Acceleration x high: %c\n", acc_x_h[0]);
+        // printf("Acceleration y low: %c\n", acc_y_l[0]);
+        // printf("Acceleration y high: %c\n", acc_y_h[0]);
+        // printf("Acceleration z low: %c\n", acc_z_l[0]);
+        // printf("Acceleration z high: %c\n", acc_z_h[0]);
         
-        // int accelX = (data[0] << 8) | data[1];
-        // int accelY = (data[2] << 8) | data[3];
-        // int accelZ = (data[4] << 8) | data[5];
-// 
-        // printf("Acceleration X: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
+        int accelX = (acc_x_l[0] << 8) | acc_x_h[0];
+        int accelY = (acc_y_l[0] << 8) | acc_y_h[0];
+        int accelZ = (acc_z_l[0] << 8) | acc_x_h[0];
+        printf("Acceleration X: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
     }
 
     // Close the file handle
