@@ -4,61 +4,61 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
-#include <stdint.h>
-#include <string.h>
+#include <errno.h>
+
+#define I2C_BUS_FILE "/dev/i2c-2"
+#define DEVICE_ADDRESS 0x6A
+#define REGISTER_ADDRESS 0x00    // Replace with the register you want to read from
 
 int main() {
-    // Open i2c file
-    int file;
-    char *bus = "/dev/i2c-2";
-    if ((file = open(bus, O_RDWR)) < 0) {
+    int file_handle;
+    char buffer[1];
+    char result_buffer[1];
+
+    // Open the I2C bus file
+    if ((file_handle = open(I2C_BUS_FILE, O_RDWR)) < 0) {
         perror("Failed to open the i2c bus");
         exit(1);
     }
 
-    // Configure the bus to communicate with the IMU
-    int addr = 0x68;
-    if (ioctl(file, I2C_SLAVE, addr) < 0) {
+    // Set the I2C slave address for the next transfers
+    if (ioctl(file_handle, I2C_SLAVE, DEVICE_ADDRESS) < 0) {
         perror("Failed to acquire bus access and/or talk to slave");
+        close(file_handle);
         exit(1);
     }
 
-    // --- WHO AM I Test using i2c_rdwr ioctl ---
+    // --- Read from a specific register (common pattern) ---
+    // Some devices require you to write the register address first,
+    // then read the data in a combined operation or separate operations.
 
-    uint8_t reg_address = 0x0F; // The register we want to read (Who Am I)
-    uint8_t data_buffer = 0;    // Buffer to hold the response
+    // 1. Specify the register address to read from
+    for (int i=0; i < 1000; i++) {
+        buffer[0] = REGISTER_ADDRESS;
+        if (write(file_handle, buffer, 1) != 1) {
+            perror("Failed to write register address");
+            close(file_handle);
+            exit(1);
+        }
 
-    // Declare the message structures as an array of 2
-    struct i2c_msg messages[2]; 
+        char data[6] = {0}; // For X, Y, Z accelerometer data (high
+        if (read(file_handle, result_buffer, 6) != 6) {
+            perror("Failed to read from the i2c bus");
+            exit(1);
+        }
 
-    // Declare the overall transaction structure
-    struct i2c_rdwr_ioctl_data packets;
+        // Process data (e.g., combine high and low bytes, convert to
+        int accelX = (data[0] << 8) | data[1];
+        int accelY = (data[2] << 8) | data[3];
+        int accelZ = (data[4] << 8) | data[5];
 
-    // --- Message 0: Write the register address (0x0F) ---
-    messages[0].addr  = addr;       // Slave address 0x68
-    messages[0].flags = 0;          // Flags = 0 for write
-    messages[0].len   = 1;          // Length of message (1 byte: the register address)
-    messages[0].buf   = &reg_address; // Pointer to the register address variable
-
-    // --- Message 1: Read 1 byte of data back ---
-    messages[1].addr  = addr;       // Slave address 0x68
-    messages[1].flags = I2C_M_RD;   // Flags = I2C_M_RD for read
-    messages[1].len   = 1;          // Length of message (1 byte: the response)
-    messages[1].buf   = &data_buffer; // Pointer to where we store the response
-
-    // Set up the packets structure
-    packets.msgs = messages; // Point to the start of the messages array
-    packets.nmsgs = 2;       // We have two messages in this transaction
-
-    // Perform the combined I2C transaction using IOCTL
-    if (ioctl(file, I2C_RDWR, &packets) < 0) {
-        perror("Failed to execute I2C_RDWR command");
-        exit(1);
+        printf("Acceleration X: %d\n", accelX);
+        printf("Acceleration X: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
     }
 
-    printf("Who Am I register value: 0x%X\n", data_buffer);
-    
-    close(file);
+    // Close the file handle
+    close(file_handle);
+
     return 0;
 }
 
