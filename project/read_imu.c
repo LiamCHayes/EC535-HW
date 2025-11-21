@@ -22,6 +22,25 @@ int main() {
 	    exit(1);
 	}
 
+    // Make sure imu can send non0 value
+    char who_am_i_reg = 0x0F;
+    char who_am_i_data = {0};
+
+    // Write the register address we want to read from
+    if (write(file, &who_am_i_reg, 1) != 1) {
+        perror("Failed to write who am I register address");
+        exit(1);
+    }
+
+    // Read one byte of data
+    if (read(file, &who_am_i_data, 1) != 1) {
+        perror("Failed to read who am I data");
+        exit(1);
+    }
+
+    printf("Who Am I register value: 0x%X\n", who_am_i_data);
+
+
 	char config[2] = {0};
 	config[0] = 0x6B;
 	config[1] = 0x00;
