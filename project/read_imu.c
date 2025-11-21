@@ -14,6 +14,7 @@
 #define WHO_AM_I_REG 0x0F
 
 // Setup addresses
+#define CTRL3_C 0x12
 #define CTRL9_XL 0x18
 #define CTRL1_XL 0x10
 #define CTRL10_C 0x19
@@ -63,6 +64,17 @@ int main() {
     // }
 
     printf("[INFO] Initializing...\n");
+
+    // TODO set endianness
+    //
+    // Enable block data update
+    buffer[0] = CTRL3_C;
+    buffer[1] = 0x40;
+    if (write(file_handle, buffer, 2) != 2) {
+        perror("Failed to enable block data update");
+        close(file_handle);
+        exit(1);
+    }
 
     // Enable acceleration axes
     buffer[0] = CTRL9_XL;
@@ -221,7 +233,6 @@ int main() {
         }
         
         // print buffers
-        // TODO combine low and high to get float16 number
         // printf("Acceleration x low: %c\n", acc_x_l[0]);
         // printf("Acceleration x high: %c\n", acc_x_h[0]);
         // printf("Acceleration y low: %c\n", acc_y_l[0]);
@@ -229,9 +240,10 @@ int main() {
         // printf("Acceleration z low: %c\n", acc_z_l[0]);
         // printf("Acceleration z high: %c\n", acc_z_h[0]);
         
-        int accelX = (acc_x_l[0] << 8) | acc_x_h[0];
-        int accelY = (acc_y_l[0] << 8) | acc_y_h[0];
-        int accelZ = (acc_z_l[0] << 8) | acc_x_h[0];
+        // TODO combine low and high to get float16 number
+        int16_t accelX = (acc_x_l[0] << 8) | acc_x_h[0];
+        int16_t accelY = (acc_y_l[0] << 8) | acc_y_h[0];
+        int16_t accelZ = (acc_z_l[0] << 8) | acc_x_h[0];
         printf("Acceleration X: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
     }
 
