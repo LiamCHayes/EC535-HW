@@ -48,7 +48,7 @@ int main() {
         int accelZ = (data[4] << 8) | data[5];
 
         printf("Acceleration X: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
-        sleep(1);
+        usleep(1000);
     }
 
 	close(file);
