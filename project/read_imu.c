@@ -23,7 +23,7 @@ int main() {
 	config[0] = 0x6B; // Power Management 1 register
 	config[1] = 0x00; // Wake up MPU6050
 	if (write(file, config, 2) != 2) {
-	    perror("Failed to write to the i2c bus");
+	    perror("Failed to write to the i2c bus #1");
 	    exit(1);
 	}
 
