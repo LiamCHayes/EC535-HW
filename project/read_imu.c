@@ -9,7 +9,7 @@
 int main() {
     // Open i2c file
 	int file;
-	char *bus = "/dev/i2c-2";
+	char *bus = "/dev/i2c-1";
 	if ((file = open(bus, O_RDWR)) < 0) {
 	    perror("Failed to open the i2c bus");
 	    exit(1);
@@ -37,7 +37,7 @@ int main() {
             exit(1);
         }
 
-        unsigned char data[6] = {0}; // For X, Y, Z accelerometer data (high
+        unsigned char data[6] = {1}; // For X, Y, Z accelerometer data (high
         if (read(file, data, 6) != 6) {
             perror("Failed to read from the i2c bus");
             exit(1);
