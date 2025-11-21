@@ -66,7 +66,7 @@ int main() {
     printf("[INFO] Initializing...\n");
 
     // Enable block data update 
-    // NOTE this is setting the whole BDU register, which contains settings for address auto-increment and endianness. If we wantto chnage these we need to set only bit 6 of this byte
+    // NOTE this is setting the whole BDU register, which contains settings for address auto-increment and endianness. If we want to chnage these we need to set only bit 6 of this byte
     buffer[0] = CTRL3_C;
     buffer[1] = 0x40;
     if (write(file_handle, buffer, 2) != 2) {
@@ -167,7 +167,7 @@ int main() {
         float accelY_g = accelY * sensitivity;
         float accelZ_g = accelZ * sensitivity;
 
-        // printf("Acceleration raw: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
+        printf("Acceleration raw: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
         printf("Acceleration grams X: %.3f, Y: %.3f, Z: %.3f\n", accelX_g, accelY_g, accelZ_g);
     }
 
