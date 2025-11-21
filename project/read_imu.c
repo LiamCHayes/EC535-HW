@@ -130,7 +130,7 @@ int main() {
             close(file_handle);
             exit(1);
         }
-        char status_data[1] = {0};
+        unsigned char status_data[1] = {0};
         if (read(file_handle, status_data, 1) != 1) {
             perror("Failed to read status reg");
             exit(1);
