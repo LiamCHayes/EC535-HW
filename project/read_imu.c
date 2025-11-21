@@ -15,7 +15,6 @@
 int main() {
     int file_handle;
     char buffer[1];
-    char result_buffer[1];
 
     // Open the I2C bus file
     if ((file_handle = open(I2C_BUS_FILE, O_RDWR)) < 0) {
