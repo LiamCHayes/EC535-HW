@@ -30,7 +30,7 @@ int main() {
 	    exit(1);
 	}
 
-    for (int i=0; i < 1000; i++) {
+    for (int i=0; i < 10000; i++) {
         char reg = 0x3B; // Accelerometer X-axis high byte register
         if (write(file, &reg, 1) != 1) {
             perror("Failed to write to the i2c bus");
