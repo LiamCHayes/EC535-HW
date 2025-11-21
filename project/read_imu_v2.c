@@ -92,25 +92,7 @@ int main() {
         exit(1);
     }
 
-    // Enable gyroscope
-    buffer[0] = CTRL10_C;
-    buffer[1] = 0x38;
-    if (write(file_handle, buffer, 2) != 2) {
-        perror("Failed to enable acceleration axes");
-        close(file_handle);
-        exit(1);
-    }
-    
-    // High performance mode for gyroscope
-    buffer[0] = CTRL2_G;
-    buffer[1] = 0x60;
-    if (write(file_handle, buffer, 2) != 2) {
-        perror("Failed to enable high performance mode gyroscope");
-        close(file_handle);
-        exit(1);
-    }
-
-    // Set data ready interrupt for only accelerometer
+    // Set data ready interrupt for accelerometer
     buffer[0] = INT1_CTRL;
     buffer[1] = 0x01;
     if (write(file_handle, buffer, 2) != 2) {
@@ -118,6 +100,24 @@ int main() {
         close(file_handle);
         exit(1);
     }
+
+    // Enable gyroscope
+    // buffer[0] = CTRL10_C;
+    // buffer[1] = 0x38;
+    // if (write(file_handle, buffer, 2) != 2) {
+        // perror("Failed to enable acceleration axes");
+        // close(file_handle);
+        // exit(1);
+    // }
+    // 
+    // // High performance mode for gyroscope
+    // buffer[0] = CTRL2_G;
+    // buffer[1] = 0x60;
+    // if (write(file_handle, buffer, 2) != 2) {
+        // perror("Failed to enable high performance mode gyroscope");
+        // close(file_handle);
+        // exit(1);
+    // }
 
     sleep(1);
     printf("[INFO] Initialized\n");
