@@ -49,19 +49,26 @@ int main() {
     }
 
     // Who am i test
-    // uint8_t config[2] = {WHO_AM_I_REG, 0x00};
-    // if (write(file_handle, config, 1) != 1) {
-            // perror("Failed to write to the i2c device");
-            // exit(1);
-    // }
-// 
-    // uint8_t value;
-    // if (read(file_handle, &value, 1) != 1) {
-            // perror("Failed to read from the i2c device");
-            // exit(1);
-    // } else {
-        // printf("Value read from register 0x%02X at address 0x%02X: 0x%02X\n", WHO_AM_I_REG, REGISTER_ADDRESS, value);
-    // }
+    data_addr_buffer[0] = WHO_AM_I_REG;
+    if (write(file_handle, data_addr_buffer, 1) != 1) {
+        perror("Failed to write to who am I register");
+        close(file_handle);
+        exit(1);
+    }
+    unsigned char whoami_data[1] = {0};
+    if (read(file_handle, whoami_data, 1) != 1) {
+        perror("Failed to read who am I data");
+        exit(1);
+    }
+    for (int i = (CHAR_BIT * sizeof(unsigned char)) - 1; i >= 0; i--) {
+        unsigned char mask = 1 << i;
+        if (whoami_data[0] & mask) {
+            printf("1");
+        } else {
+            printf("0");
+        }
+    }
+    printf("\n"); // Print a newline character at the end
 
     printf("[INFO] Initializing...\n");
 
