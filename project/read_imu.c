@@ -6,22 +6,24 @@
 #include <linux/i2c-dev.h>
 
 int main() {
+    // Open i2c file
 	int file;
-	char *bus = "/dev/i2c-2"; // Or "/dev/spidev0.0" for SPI
+	char *bus = "/dev/i2c-2";
 	if ((file = open(bus, O_RDWR)) < 0) {
 	    perror("Failed to open the i2c bus");
 	    exit(1);
 	}
 
-	int addr = 0x68; // MPU6050 I2C address
+    // Configure the bus to communicate with the IMU
+	int addr = 0x68;
 	if (ioctl(file, I2C_SLAVE, addr) < 0) {
 	    perror("Failed to acquire bus access and/or talk to slave");
 	    exit(1);
 	}
 
 	char config[2] = {0};
-	config[0] = 0x6B; // Power Management 1 register
-	config[1] = 0x00; // Wake up MPU6050
+	config[0] = 0x8000; // Power Management 1 register
+	config[1] = 0x8008; // Wake up MPU6050
 	if (write(file, config, 2) != 2) {
 	    perror("Failed to write to the i2c bus #1");
 	    exit(1);
@@ -42,7 +44,9 @@ int main() {
 	// Process data (e.g., combine high and low bytes, convert to
 	int accelX = (data[0] << 8) | data[1];
 
-	printf("Acceleration X: %d", accelX);
+    for (int i=0; i < 10000; i++) {
+        printf("Acceleration X: %d\n", accelX);
+    }
 
 	close(file);
 }
