@@ -9,7 +9,7 @@
 int main() {
     // Open i2c file
 	int file;
-	char *bus = "/dev/i2c-1";
+	char *bus = "/dev/i2c-2";
 	if ((file = open(bus, O_RDWR)) < 0) {
 	    perror("Failed to open the i2c bus");
 	    exit(1);
