@@ -35,16 +35,16 @@ int main() {
 	    exit(1);
 	}
 
-	char data[6] = {0}; // For X, Y, Z accelerometer data (high
-	if (read(file, data, 6) != 6) {
-	    perror("Failed to read from the i2c bus");
-	    exit(1);
-	}
-
-	// Process data (e.g., combine high and low bytes, convert to
-	int accelX = (data[0] << 8) | data[1];
-
     for (int i=0; i < 10000; i++) {
+        char data[6] = {1}; // For X, Y, Z accelerometer data (high
+        if (read(file, data, 6) != 6) {
+            perror("Failed to read from the i2c bus");
+            exit(1);
+        }
+
+        // Process data (e.g., combine high and low bytes, convert to
+        int accelX = (data[0] << 8) | data[1];
+
         printf("Acceleration X: %d\n", accelX);
     }
 
