@@ -111,11 +111,11 @@ int main() {
         exit(1);
     }
 
-    // gyroscope data ready interrupt
+    // Set data ready interrupt for only accelerometer
     buffer[0] = INT1_CTRL;
-    buffer[1] = 0x02;
+    buffer[1] = 0x01;
     if (write(file_handle, buffer, 2) != 2) {
-        perror("Failed to enable gyroscope data ready interrupt");
+        perror("Failed to enable accelerometer data ready interrupt");
         close(file_handle);
         exit(1);
     }
