@@ -17,7 +17,7 @@ int main() {
         fp = fopen(file_path, "r");
 
         if (fp == NULL) {
-            perror("Error opening file: %s\n", file_path);
+            perror("Error opening file");
             return 1;
         }
 
