@@ -13,7 +13,7 @@ int main() {
         // Open the device file for the analog pin (e.g., in_voltage0)
         // "0" is the pin you want to read (0-7)
         char file_path[100];
-        sprintf(file_path, "%s%d_raw", adc_path, 0);
+        sprintf(file_path, "%s%d_raw", adc_path, 1);
         fp = fopen(file_path, "r");
 
         if (fp == NULL) {
