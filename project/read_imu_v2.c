@@ -129,36 +129,27 @@ int main() {
         }
     }
     printf("\n");
-    
-    // Close the file handle
-    close(file_handle);
 
     sleep(2);
 
     // Read data for a certain amount of time
     for (int i=0; i < 1000; i++) {
-        // Open the I2C bus file
-        if ((file_handle = open(I2C_BUS_FILE, O_RDWR)) < 0) {
-            perror("Failed to open the i2c bus");
-            exit(1);
-        }
-
         // Check if there is new data ready
-        data_addr_buffer[0] = STATUS_REG;
-        if (write(file_handle, data_addr_buffer, 1) != 1) {
-            perror("Failed to write to status reg");
-            close(file_handle);
-            exit(1);
-        }
-        unsigned char status_data[1] = {0};
-        if (read(file_handle, status_data, 1) != 1) {
-            perror("Failed to read status reg");
-            exit(1);
-        }
-
-        if ((status_data[0] & 0x01) == 0) {
-            continue;
-        }
+        // data_addr_buffer[0] = STATUS_REG;
+        // if (write(file_handle, data_addr_buffer, 1) != 1) {
+            // perror("Failed to write to status reg");
+            // close(file_handle);
+            // exit(1);
+        // }
+        // unsigned char status_data[1] = {0};
+        // if (read(file_handle, status_data, 1) != 1) {
+            // perror("Failed to read status reg");
+            // exit(1);
+        // }
+// 
+        // if ((status_data[0] & 0x01) == 0) {
+            // continue;
+        // }
 
         // Read all 6 acceleration data registers
         data_addr_buffer[0] = OUTX_L_XL | 0x80;
@@ -187,8 +178,10 @@ int main() {
 
         printf("Acceleration raw: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
         printf("Acceleration grams X: %.3f, Y: %.3f, Z: %.3f\n", accelX_g, accelY_g, accelZ_g);
-        close(file_handle);
     }
+
+    // Close the file handle
+    close(file_handle);
 
     return 0;
 }
