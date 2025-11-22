@@ -91,6 +91,6 @@ int configure_and_burn() {
 
 int main() {
     printf("Starting AS5600 Configuration and NVM Burn...\n");
-    configure_and_burn()
+    configure_and_burn();
     return 0;
 }
