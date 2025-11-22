@@ -68,9 +68,9 @@ int main() {
         exit(1);
     }
     
-    // High performance mode
+    // High performance mode 60h for high, 40h for normal, 30h for low power
     buffer[0] = CTRL1_XL;
-    buffer[1] = 0x40;
+    buffer[1] = 0x30;
     if (write(file_handle, buffer, 2) != 2) {
         perror("Failed to enable high performance mode accelerometer");
         close(file_handle);
@@ -129,10 +129,20 @@ int main() {
         }
     }
     printf("\n");
+    
+    // Close the file handle
+    close(file_handle);
+
     sleep(2);
 
     // Read data for a certain amount of time
     for (int i=0; i < 1000; i++) {
+        // Open the I2C bus file
+        if ((file_handle = open(I2C_BUS_FILE, O_RDWR)) < 0) {
+            perror("Failed to open the i2c bus");
+            exit(1);
+        }
+
         // Check if there is new data ready
         data_addr_buffer[0] = STATUS_REG;
         if (write(file_handle, data_addr_buffer, 1) != 1) {
@@ -177,33 +187,8 @@ int main() {
 
         printf("Acceleration raw: %d, Y: %d, Z: %d\n", accelX, accelY, accelZ);
         printf("Acceleration grams X: %.3f, Y: %.3f, Z: %.3f\n", accelX_g, accelY_g, accelZ_g);
-            
-        // Who am i test
-        printf("Who Am I test\n");
-        data_addr_buffer[0] = WHO_AM_I_REG;
-        if (write(file_handle, data_addr_buffer, 1) != 1) {
-            perror("Failed to write to who am I register");
-            close(file_handle);
-            exit(1);
-        }
-        unsigned char whoami_data[1] = {0};
-        if (read(file_handle, whoami_data, 1) != 1) {
-            perror("Failed to read who am I data");
-            exit(1);
-        }
-        for (int i = (CHAR_BIT * sizeof(unsigned char)) - 1; i >= 0; i--) {
-            unsigned char mask = 1 << i;
-            if (whoami_data[0] & mask) {
-                printf("1");
-            } else {
-                printf("0");
-            }
-        }
-        printf("\n");
+        close(file_handle);
     }
-
-    // Close the file handle
-    close(file_handle);
 
     return 0;
 }
