@@ -44,9 +44,9 @@ int main() {
         exit(1);
     }
     if (whoami_data[0] == WHO_AM_I_EXPECTED) {
-        prinf("Who am I test passed!");
+        printf("Who am I test passed!");
     } else {
-        prinf("Who am I test failed!");
+        printf("Who am I test failed!");
     }
 
     sleep(2);
