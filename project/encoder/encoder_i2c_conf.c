@@ -1,3 +1,12 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
+#include <stdint.h>
+
+#define I2C_BUS_PATH "/dev/i2c-2"
 #define AS5600_ADDR  0x36
 #define CONF_REG_ADDR 0x07
 #define ANALOG_CONF_VALUE 0x0000 // 16-bit value for Analog Output (Proportional)
