@@ -31,6 +31,25 @@ int main() {
     }
 
     // Check Who Am I
+    printf("Who Am I test\n");
+    data_addr_buffer[0] = WHO_AM_I_REG;
+    if (write(file_handle, data_addr_buffer, 1) != 1) {
+        perror("Failed to write to who am I register");
+        close(file_handle);
+        exit(1);
+    }
+    unsigned char whoami_data[1] = {0};
+    if (read(file_handle, whoami_data, 1) != 1) {
+        perror("Failed to read who am I data");
+        exit(1);
+    }
+    if (whoami_data[0] == WHO_AM_I_EXPECTED) {
+        prinf("Who am I test passed!");
+    } else {
+        prinf("Who am I test failed!");
+    }
+
+    sleep(2);
 
     // Close the file handle
     close(file_handle);
