@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
+#include <linux/i2c.h>
 #include <stdint.h>
 
 #define I2C_BUS_FILE "/dev/i2c-2"
@@ -32,18 +33,31 @@ int main() {
 
     // Check Who Am I
     printf("Who Am I test\n");
-    data_addr_buffer[0] = WHO_AM_I_REG;
-    if (write(file_handle, data_addr_buffer, 1) != 1) {
-        perror("Failed to write to who am I register");
+    uint8_t reg_addr = WHO_AM_I_REG;
+    uint8_t whoami_data = 0;
+    struct i2c_msg msgs[2];
+    struct i2c_rdwr_ioctl_data msgset;
+
+    msgs[0].addr = DEVICE_ADDRESS;
+    msgs[0].flags = 0;
+    msgs[0].len = 1;
+    msgs[0].buf = &reg_addr;
+    
+    msgs[1].addr = DEVICE_ADDRESS;
+    msgs[1].flags = I2C_M_RD;
+    msgs[1].len = 1;
+    msgs[1].buf = &whoami_data;
+
+    msgset.msgs = msgs;
+    msgset.nmsgs = 2;
+
+    if (ioctl(file_handle, I2C_RDWR, &msgset) < 0) {
+        perror("Failed to perform Who am I test");
         close(file_handle);
         exit(1);
     }
-    unsigned char whoami_data[1] = {0};
-    if (read(file_handle, whoami_data, 1) != 1) {
-        perror("Failed to read who am I data");
-        exit(1);
-    }
-    if (whoami_data[0] == WHO_AM_I_EXPECTED) {
+
+    if (whoami_data == WHO_AM_I_EXPECTED) {
         printf("Who am I test passed!");
     } else {
         printf("Who am I test failed!");
