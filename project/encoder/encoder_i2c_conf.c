@@ -29,7 +29,7 @@ int configure_as5600_analog() {
         return -1;
     }
 
-    Write the Configuration Value to the CONF Register (0x07)
+    // Write the Configuration Value to the CONF Register (0x07)
     
     // The AS5600 uses an auto-incrementing pointer for multi-byte writes.
     // The CONF register (0x07) is 16-bits long.
