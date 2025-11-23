@@ -149,10 +149,10 @@ int main() {
         msgs_gyro[1].len = 6;
         msgs_gyro[1].buf = &gyro_data_buffer;
 
-        msgset.msgs = msgs;
-        msgset.nmsgs = 2;
+        msgset_gyro.msgs = msgs_gyro;
+        msgset_gyro.nmsgs = 2;
 
-        if (ioctl(file_handle, I2C_RDWR, &msgset) < 0) {
+        if (ioctl(file_handle, I2C_RDWR, &msgset_gyro) < 0) {
             perror("Failed to read gyroscope data");
             close(file_handle);
             exit(1);
