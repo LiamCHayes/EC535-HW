@@ -10,6 +10,8 @@
 
 #define I2C_BUS_FILE "/dev/i2c-2"
 #define DEVICE_ADDRESS 0x68
+#define REG_BANK_SEL 0x7F
+#define PWR_MGMT_1 0x06
 #define WHO_AM_I_REG 0x00
 #define WHO_AM_I_EXPECTED 0xEA
 
@@ -31,8 +33,23 @@ int main() {
         exit(1);
     }
 
+    // Set the current bank to bank 0
+    uint8_t bank_select_data[2] = {REG_BANK_SEL, 0x00};
+    if (write(file_handle, bank_select_data, 2) != 2) {
+        perror("Failed to select User Bank 0 for reset");
+        // Continue, as this might not be fatal yet
+    }
+
+    // Soft reset to default values to make sure the chip is in a clean state
+    uint8_t reset_cmd[2] = {PWR_MGMT_1, 0x80};
+    if (write(file_handle, reset_cmd, 2) != 2) {
+        perror("Failed to perform soft reset");
+    }
+
+    usleep(100000);
+
     // Check Who Am I
-    printf("Who Am I test\n");
+    printf("Who Am I test...\n");
     uint8_t reg_addr = WHO_AM_I_REG;
     uint8_t whoami_data = 0;
     struct i2c_msg msgs[2];
@@ -58,9 +75,9 @@ int main() {
     }
 
     if (whoami_data == WHO_AM_I_EXPECTED) {
-        printf("Who am I test passed!");
+        printf("Who am I test passed!\n");
     } else {
-        printf("Who am I test failed!");
+        printf("Who am I test failed\n");
     }
 
     sleep(2);
