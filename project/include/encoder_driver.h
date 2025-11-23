@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <string.h>I
+#include <string.h>
 
 //takes the analog pin (ie: AIN0) as input
 //outputs the analog positional encoder value at respective pin in radians

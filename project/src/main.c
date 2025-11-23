@@ -27,6 +27,8 @@ int main() {
     for (int i=0; i<10000; i++) {
         imu_data_t imu_data = imu_read(imu_file_handle);
         double encoder_postion = get_encoder_rot(ENCODER_ANALOG_PIN);
+
+	printf("Acceleration X: %.03f\n", imu_data.accel_x);
     }
 
     return 0;
