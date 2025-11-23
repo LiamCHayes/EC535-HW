@@ -38,6 +38,8 @@ int imu_init(int file_handle) {
         // Continue, as this might not be fatal yet
     }
 
+    usleep(100000);
+
     // Wake up chip and select PLL clock
     uint8_t clock_select_cmd[2] = {PWR_MGMT_1, 0x01};
     if (write(file_handle, clock_select_cmd, 2) != 2) {

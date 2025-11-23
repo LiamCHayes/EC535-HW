@@ -24,7 +24,7 @@ int main() {
     }
 
     // Loop and get data
-    for (int i=0; i<10000; i++) {
+    for (int i=0; i<1000; i++) {
         imu_data_t imu_data = imu_read(imu_file_handle);
         double encoder_postion = get_encoder_rot(ENCODER_ANALOG_PIN);
 
