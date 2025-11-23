@@ -12,6 +12,7 @@
 #define DEVICE_ADDRESS 0x68
 #define REG_BANK_SEL 0x7F
 #define PWR_MGMT_1 0x06
+#define PWR_MGMT_2 0x07
 #define WHO_AM_I_REG 0x00
 #define WHO_AM_I_EXPECTED 0xEA
 
@@ -80,6 +81,20 @@ int main() {
         printf("Who am I test failed\n");
     }
 
+    // Wake up chip and select PLL clock
+    uint8_t clock_select_cmd[2] = {PWR_MGMT_1, 0x01};
+    if (write(file_handle, clock_select_cmd, 2) != 2) {
+        perror("Failed to set PLL clock");
+    }
+
+    // Enable accelerometer and gyroscope
+    uint8_t enable_sensors_cmd[2] = {PWR_MGMT_2, 0x00};
+    if (write(file_handle, enable_sensors_cmd, 2) != 2) {
+        perror("Failed to enable sensors");
+    }
+
+    usleep(10000);
+
     // Loop and read sensor values
     for (int i=0; i < 10000; i++) {
         // Acceleration
@@ -108,7 +123,7 @@ int main() {
         }
 
         int16_t accel_x = (int16_t)(accel_data_buffer[0] << 8 | accel_data_buffer[1]);
-        printf("Raw acceleration x: %d (0x%04x)\n", accel_x, (uint16_t)accel_x);
+        printf("Raw acceleration x: %d\n", accel_x);
 
         // Gyroscope
     }
