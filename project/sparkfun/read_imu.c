@@ -15,6 +15,8 @@
 #define WHO_AM_I_REG 0x00
 #define WHO_AM_I_EXPECTED 0xEA
 
+#define ACCEL_XOUT_H 0x2D
+
 int main() {
     int file_handle;
 
@@ -78,7 +80,38 @@ int main() {
         printf("Who am I test failed\n");
     }
 
-    sleep(2);
+    // Loop and read sensor values
+    for (int i=0; i < 10000; i++) {
+        // Acceleration
+        uint8_t reg_addr = ACCEL_XOUT_H;
+        uint8_t accel_data_buffer[2] = {0, 0};
+        struct i2c_msg msgs[2];
+        struct i2c_rdwr_ioctl_data msgset;
+
+        msgs[0].addr = DEVICE_ADDRESS;
+        msgs[0].flags = 0;
+        msgs[0].len = 1;
+        msgs[0].buf = &reg_addr;
+
+        msgs[1].addr = DEVICE_ADDRESS;
+        msgs[1].flags = I2C_M_RD;
+        msgs[1].len = 2;
+        msgs[1].buf = &accel_data_buffer;
+
+        msgset.msgs = msgs;
+        msgset.nmsgs = 2;
+
+        if (ioctl(file_handle, I2C_RDWR, &msgset) < 0) {
+            perror("Failed to read Accel X data");
+            close(file_handle);
+            exit(1);
+        }
+
+        int16_t accel_x = (int16_t)(accel_data_buffer[0] << 8 | accel_data_buffer[1]);
+        printf("Raw acceleration x: %d (0x%04x)\n", accel_x, (uint16_t)accel_x);
+
+        // Gyroscope
+    }
 
     // Close the file handle
     close(file_handle);
