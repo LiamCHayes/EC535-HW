@@ -88,6 +88,8 @@ imu_data_t imu_read(int file_handle) {
     int16_t accel_y = (int16_t)(accel_data_buffer[2] << 8 | accel_data_buffer[3]);
     int16_t accel_z = (int16_t)(accel_data_buffer[4] << 8 | accel_data_buffer[5]);
 
+    printf("Raw acceleration: %d", accel_x);
+
     data.accel_x = (float)accel_x / ACCEL_SCALE_FACTOR;
     data.accel_y = (float)accel_y / ACCEL_SCALE_FACTOR;
     data.accel_z = (float)accel_z / ACCEL_SCALE_FACTOR;
