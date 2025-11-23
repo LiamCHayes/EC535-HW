@@ -34,9 +34,10 @@ double get_encoder_rot(int analog_pin) {
         }
 
 	//3760 is ~ 1.65V (max reading from analog), so 3760 is 0/2pi
-	double encoder_position = analog_value / 3760 * 2 * 3.14159265;
+	double encoder_position = (double)analog_value / 3760 * 2 * 3.14159265;
 
         fclose(fp);
+        usleep(100);
 
         return encoder_position;
 }
