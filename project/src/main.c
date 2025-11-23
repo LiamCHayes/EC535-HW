@@ -29,7 +29,7 @@ int main() {
         double encoder_postion = get_encoder_rot(ENCODER_ANALOG_PIN);
 
 	// printf("Gyroscope X: %.03f, Y: %.03f, Z: %.03f\n", imu_data.gyro_x, imu_data.gyro_y, imu_data.gyro_z);
-    printf("Encoder: %.03f", encoder_postion);
+    printf("Encoder: %.03f\n", encoder_postion);
     }
 
     return 0;
