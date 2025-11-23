@@ -24,11 +24,11 @@ int main() {
     }
 
     // Loop and get data
-    for (int i=0; i<1000; i++) {
+    for (int i=0; i<10000; i++) {
         imu_data_t imu_data = imu_read(imu_file_handle);
         double encoder_postion = get_encoder_rot(ENCODER_ANALOG_PIN);
 
-	printf("Acceleration X: %.03f\n", imu_data.accel_x);
+	printf("Acceleration X: %.03f, Y: %.03f, Z: %.03f\n", imu_data.accel_x, imu_data.accel_y, imu_data.accel_z);
     }
 
     return 0;
