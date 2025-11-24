@@ -1,0 +1,20 @@
+# Possible attacks for lab 3
+
+Attack 1:
+Input: Create timer, delete timer, proc show, repeat until seg fault.
+Output: Seg fault
+Description: There are multiple del_timer calls. Find a state where a function accesses the time pointer after it has already been freed. proc_show does not check if the timer is active or not before attempting to access the timer pointer.
+Fix to problem: Check if the timer is active before trying to access the timer pointer in proc_show.
+
+Attack 2:
+Input: Rapidly write to the file to set the message variable and start a timer.
+Output: Only supports one timer but the message variabe would be set multiple times, so it would either make a timer with a different message or seg fault.
+Description: Race conditions in shared variables. Global variables with no locks like the message variable.
+Fix to problem: Put a lock on all shared variables.
+
+Attack 3:
+Input: A really long timer message.
+Output: Unexpected output or seg fault.
+Description: If they are not checking for a message that is too long, you can overwrite other information in the stack.
+Fix to problem: Check that user input is in an expected format.
+
