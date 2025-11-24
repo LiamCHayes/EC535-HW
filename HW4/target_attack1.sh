@@ -9,15 +9,15 @@ $1/ktimer -s 2 "Timer 1" &
 $1/ktimer -r
 $1/ktimer -l
 cat /proc/mytimer
-$1/ul/ktimer -s 2 "Timer 1" &
+$1/ktimer -s 2 "Timer 1" &
 $1/ktimer -r
 $1/ktimer -l
 cat /proc/mytimer
-$1/ul/ktimer -s 2 "Timer 1" &
+$1/ktimer -s 2 "Timer 1" &
 $1/ktimer -r
 $1/ktimer -l
 cat /proc/mytimer
-$1/ul/ktimer -s 2 "Timer 1" &
+$1/ktimer -s 2 "Timer 1" &
 $1/ktimer -r
 $1/ktimer -l
 cat /proc/mytimer
