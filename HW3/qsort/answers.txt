@@ -1,0 +1,11 @@
+spgosse liamh
+run gdb -q simpleIO
+set a breakpoint at line 14
+step through until there is the input (after the gets command)
+put in next command
+print out rsp 
+`x/x $rsp`
+`x/x $rbp`
+`x/x $rbp-4`
+`x/x $rbp-8`
+see the values until we see 4141 - the ascii code

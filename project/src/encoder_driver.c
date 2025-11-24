@@ -10,6 +10,7 @@ double get_encoder_rot(int analog_pin) {
 	//** returns encoder value in radians **//
 
     // The analog input devices are located in this directory
+    // TODO make fp an input to this function and open fp in main.c
     const char *adc_path = "/sys/bus/iio/devices/iio:device0/in_voltage";
     FILE *fp;
     char buffer[20];

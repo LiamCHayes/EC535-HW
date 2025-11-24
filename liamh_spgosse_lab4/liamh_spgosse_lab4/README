@@ -1,0 +1,6 @@
+Liam Hayes liamh@bu.edu
+Sam Gossett spgosse@bu.edu
+
+https://www.kernel.org/doc/html/v4.19/driver-api/gpio/index.html for an example of using gpio.h and into to gpios in the kernel space
+https://beagleboard.github.io/bone101/static/images/cape-headers.png for the pinout diagram of the beaglebone
+https://en.wikipedia.org/wiki/Interrupt for learning about interrupts

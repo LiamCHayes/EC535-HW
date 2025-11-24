@@ -1,0 +1,25 @@
+# Possible attacks for my lab 3
+
+Look for unknown output, seg faults, or kernel panic
+
+multiple del_timer calls. Find a state where a function accesses the time pointer after it has already been freed.
+- timer_handler to delete timer, proc show or char dev read to access the timer->expires
+- add robust pointer checks
+- This would cause kernel panic or seg fault
+
+Race conditions in shared variables. Global variables with no locks
+- rapidly open/close/write to the device file to trigger a race condition that corrupts kernel memory and system crash
+- Implement locking
+- this would cause unexpected output 
+
+Buffer overflows in writing data. 
+- mytimer_write, the user can supply an input string that is parsed using strsep. pass unexpected input structure or very long string
+- mytimer_read, if message is very large it could overflow the 256 byte line buffer
+- validate input lengths
+- this would cause kernel panic or unexpected behavior
+
+Deprecated APIs
+- asm/uaccess using raw_copy_to/from_user
+- use up-to-date APIs
+- this can cause vulnerabilities
+
