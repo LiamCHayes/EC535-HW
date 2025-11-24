@@ -4,22 +4,22 @@ Attack 1:
 Input: Create timer, delete timer, read dev file, proc show, repeat until seg fault.
 Output: Seg fault
 Description: Null pointer access. There could be multiple del_timer calls. Find a state where a function accesses the timer pointer after it has already been freed.
-Fix to problem: Check if the timer is active before trying to access the timer pointer in proc_show.
+Fix to problem: N/A (but if I were to fix: Check if the timer is active before trying to access the timer pointer in proc_show)
 
 Attack 2:
 Input: Rapidly write to the file to set the message variable and start a timer.
 Output: Only supports one timer but the message variabe would be set multiple times, so it would either make a timer with a different message or seg fault.
 Description: Race conditions in shared variables. Global variables with no locks like the message variable.
-Fix to problem: Put a lock on all shared variables.
+Fix to problem: N/A (but if I were to fix: Put a lock on all shared variables)
 
 Attack 3:
 Input: A really long timer message or start a very long timer.
 Output: Unexpected behavior or seg fault.
 Description: Buffer overflow. If they are not checking for a message that is too long or a time limit for the timer, you can overwrite other information in the stack.
-Fix to problem: Check that user input is in an expected format.
+Fix to problem: N/A (but if I were to fix: Check that user input is in an expected format)
 
 Attack 4:
 Input: Create timer, delete timer, delete timer
 Output: Seg fault
 Description: Null pointer access. If they don't check for timer already being deleted, then deleting twice would cause a seg fault.
-Fix to problem: Check if the timer is active before trying to delete the timer pointer.
+Fix to problem: Fixed! Check if the timer is active before trying to delete the timer pointer.

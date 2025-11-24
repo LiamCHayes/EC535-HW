@@ -9,7 +9,7 @@ cd ../../
 
 cp -r liamh_lab3/ rootfs/root
 cp -r hw4_targets/ rootfs/root
-cp attack*.sh rootfs/root
+cp *attack*.sh rootfs/root
 ./rebuild-rootfs.sh
 
 qemu-system-arm -M virt -m 512 -kernel stock-zImage -nographic \
