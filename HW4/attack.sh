@@ -6,9 +6,9 @@ mknod /dev/mytimer c 61 0
 insmod liamh_lab3/km/mytimer.ko
 
 # Try to access data from a null pointer
-ul/ktimer -s 2 "Timer 1" &
-ul/ktimer -r
-ul/ktimer -l
+liamh_lab3/ul/ktimer -s 2 "Timer 1" &
+liamh_lab3/ul/ktimer -r
+liamh_lab3/ul/ktimer -l
 cat /proc/mytimer
 
 # Create a race condition in a shared variable
