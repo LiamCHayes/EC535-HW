@@ -263,19 +263,21 @@ static ssize_t mytimer_write(struct file *filp, const char *buf, size_t count, l
 		}
 	} else if (strcmp(token, "-r") == 0) {
 		// Remove timer
-		struct siginfo info;
-		struct task_struct *task = pid_task(find_vpid(pid), PIDTYPE_PID);
+        if (timer_pending(timer)) {
+            struct siginfo info;
+            struct task_struct *task = pid_task(find_vpid(pid), PIDTYPE_PID);
 
-		memset(&info, 0, sizeof(struct siginfo));
-		info.si_signo = SIGIO;     
-		info.si_code = SI_QUEUE;  
-		info.si_int = 1; 
+            memset(&info, 0, sizeof(struct siginfo));
+            info.si_signo = SIGIO;     
+            info.si_code = SI_QUEUE;  
+            info.si_int = 1; 
 
-		send_sig_info(SIGIO, &info, task);
+            send_sig_info(SIGIO, &info, task);
 
-		del_timer_sync(timer);
-		kfree(message);
-		message = NULL;
+            del_timer_sync(timer);
+            kfree(message);
+            message = NULL;
+        }
 	}
 	
 	return count;
